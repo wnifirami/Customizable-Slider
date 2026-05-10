@@ -7,12 +7,8 @@ A lightweight, fully generic SwiftUI slider component for iOS. Drop it in, pass 
 ## Preview
 
 <p align="center">
-  <img src="Screenshots/sliders.png" width="30%" alt="All sliders" />
-  &nbsp;&nbsp;
-  <img src="Screenshots/themes.png" width="30%" alt="Theme presets" />
-  &nbsp;&nbsp;
-  <img src="Screenshots/settings.png" width="30%" alt="Configuration sheet" />
-</p>
+  <img src="https://github.com/user-attachments/assets/7e0a835e-2951-48ae-afb9-5acfb6a220da" width="30%" alt="All sliders" />
+
 
 ---
 
