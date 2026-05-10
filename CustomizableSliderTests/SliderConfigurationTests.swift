@@ -19,6 +19,22 @@ final class SliderConfigurationTests: XCTestCase {
         XCTAssertTrue(appearance.showStepTicks)
         XCTAssertTrue(appearance.snapsToSteps)
         XCTAssertTrue(appearance.showLabels)
+        XCTAssertFalse(appearance.showOnlyBoundaryLabels)
+    }
+
+    func testEnablingShowOnlyBoundaryLabelsDoesNotAffectOriginal() {
+        let original = SliderConfiguration.default
+        var copy = original
+        copy.appearance.showOnlyBoundaryLabels = true
+        XCTAssertTrue(copy.appearance.showOnlyBoundaryLabels)
+        XCTAssertFalse(original.appearance.showOnlyBoundaryLabels)
+    }
+
+    func testShowOnlyBoundaryLabelsAffectsEquality() {
+        let first  = SliderConfiguration.default
+        var second = SliderConfiguration.default
+        second.appearance.showOnlyBoundaryLabels = true
+        XCTAssertNotEqual(first, second)
     }
 
     // MARK: - Value semantics (mutating a copy must not affect the original)

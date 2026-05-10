@@ -1,41 +1,126 @@
-//
-//  Customizable_SliderUITests.swift
-//  Customizable SliderUITests
-//
-//  Created by Rami Ounifi on 30.04.26.
-//
-
 import XCTest
 
-final class Customizable_SliderUITests: XCTestCase {
+final class CustomizableSliderUITests: XCTestCase {
+
+    private var app: XCUIApplication!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        app = nil
     }
 
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
+    // MARK: - App launch
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testNavigationTitleIsVisible() {
+        XCTAssertTrue(app.navigationBars["Sliders"].exists)
     }
 
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+    func testThemeButtonExistsInToolbar() {
+        XCTAssertTrue(app.buttons["Theme"].exists)
+    }
+
+    // MARK: - Section headers
+
+    func testLoanAmountSectionIsVisible() {
+        XCTAssertTrue(app.staticTexts["Loan Amount"].exists)
+    }
+
+    func testVolumeSectionIsVisible() {
+        XCTAssertTrue(app.staticTexts["Volume"].exists)
+    }
+
+    func testRatingSectionIsVisible() {
+        XCTAssertTrue(app.staticTexts["Rating"].exists)
+    }
+
+    func testTemperatureSectionIsVisible() {
+        XCTAssertTrue(app.staticTexts["Temperature"].exists)
+    }
+
+    // MARK: - Configuration sheet
+
+    func testThemeButtonOpensConfigurationSheet() {
+        app.buttons["Theme"].tap()
+        XCTAssertTrue(app.navigationBars["Configuration"].waitForExistence(timeout: 2))
+    }
+
+    func testConfigurationSheetHasDragIndicatorToggle() {
+        app.buttons["Theme"].tap()
+        XCTAssertTrue(app.switches["Drag Indicator"].waitForExistence(timeout: 2))
+    }
+
+    func testConfigurationSheetHasBoundaryLabelsToggle() {
+        app.buttons["Theme"].tap()
+        XCTAssertTrue(app.switches["Boundary Labels Only"].waitForExistence(timeout: 2))
+    }
+
+    func testConfigurationSheetShowsAllPresets() {
+        app.buttons["Theme"].tap()
+        _ = app.navigationBars["Configuration"].waitForExistence(timeout: 2)
+        XCTAssertTrue(app.staticTexts["Default"].exists)
+        XCTAssertTrue(app.staticTexts["Ocean"].exists)
+        XCTAssertTrue(app.staticTexts["Sunset"].exists)
+        XCTAssertTrue(app.staticTexts["Minimal"].exists)
+    }
+
+    func testDoneButtonDismissesConfigurationSheet() {
+        app.buttons["Theme"].tap()
+        _ = app.navigationBars["Configuration"].waitForExistence(timeout: 2)
+        app.buttons["Done"].tap()
+        XCTAssertTrue(app.navigationBars["Sliders"].waitForExistence(timeout: 2))
+    }
+
+    // MARK: - Toggle interactions
+
+    func testDragIndicatorToggleIsOnByDefault() {
+        app.buttons["Theme"].tap()
+        let toggle = app.switches["Drag Indicator"]
+        _ = toggle.waitForExistence(timeout: 2)
+        XCTAssertEqual(toggle.value as? String, "1")
+    }
+
+    func testBoundaryLabelsToggleIsOffByDefault() {
+        app.buttons["Theme"].tap()
+        let toggle = app.switches["Boundary Labels Only"]
+        _ = toggle.waitForExistence(timeout: 2)
+        XCTAssertEqual(toggle.value as? String, "0")
+    }
+
+    func testTogglingDragIndicatorChangesItsState() {
+        app.buttons["Theme"].tap()
+        let toggle = app.switches["Drag Indicator"]
+        _ = toggle.waitForExistence(timeout: 2)
+        toggle.tap()
+        XCTAssertEqual(toggle.value as? String, "0")
+    }
+
+    func testTogglingBoundaryLabelsChangesItsState() {
+        app.buttons["Theme"].tap()
+        let toggle = app.switches["Boundary Labels Only"]
+        _ = toggle.waitForExistence(timeout: 2)
+        toggle.tap()
+        XCTAssertEqual(toggle.value as? String, "1")
+    }
+
+    // MARK: - Preset selection
+
+    func testSelectingOceanPresetChecksIt() {
+        app.buttons["Theme"].tap()
+        _ = app.navigationBars["Configuration"].waitForExistence(timeout: 2)
+        app.staticTexts["Ocean"].tap()
+        XCTAssertTrue(app.images["checkmark"].exists)
+    }
+
+    func testSwitchingPresetMovesCheckmark() {
+        app.buttons["Theme"].tap()
+        _ = app.navigationBars["Configuration"].waitForExistence(timeout: 2)
+        app.staticTexts["Ocean"].tap()
+        app.staticTexts["Sunset"].tap()
+        XCTAssertTrue(app.images["checkmark"].exists)
     }
 }

@@ -1,13 +1,6 @@
-//
-//  Customizable_SliderUITestsLaunchTests.swift
-//  Customizable SliderUITests
-//
-//  Created by Rami Ounifi on 30.04.26.
-//
-
 import XCTest
 
-final class Customizable_SliderUITestsLaunchTests: XCTestCase {
+final class CustomizableSliderUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
@@ -18,12 +11,9 @@ final class Customizable_SliderUITestsLaunchTests: XCTestCase {
     }
 
     @MainActor
-    func testLaunch() throws {
+    func testLaunchScreenshot() throws {
         let app = XCUIApplication()
         app.launch()
-
-        // Insert steps here to perform after app launch but before taking a screenshot,
-        // such as logging into a test account or navigating somewhere in the app
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Launch Screen"

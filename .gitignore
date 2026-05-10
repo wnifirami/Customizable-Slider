@@ -71,3 +71,10 @@ fastlane/test_output
 # Claude
 CLAUDE.md
 .claude/
+
+# Git mergetool backups (p4merge)
+_BACKUP_*
+_BASE_*
+_LOCAL_*
+_REMOTE_*
+*.orig
